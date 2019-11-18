@@ -1,7 +1,7 @@
 import React from 'react'
 import {createStore, applyMiddleware} from 'redux'
 import {Provider} from 'react-redux'
-import FirstPage from './src/components/firstPage'
+import MainAppScreen from './src/components'
 import reducer from './src/reducers'
 import thunk from 'redux-thunk'
 
@@ -23,7 +23,7 @@ class App extends React.Component{
     
     return(
       <Provider store={store}>
-        <FirstPage/>
+        <MainAppScreen/>
       </Provider>
     )
   } 

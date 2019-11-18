@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { StyleSheet, Text, View,FlatList,Button, TouchableOpacity } from 'react-native';
 import {connect} from 'react-redux'
 import ProjectsListItem from './projectsListItem'
+import Header from '../uikit/header'
 const DATA = [
   {
     id: '1',
@@ -92,26 +93,39 @@ class ProjectsList extends React.Component {
   }
     render() {
     //   console.log('projectsView:'+this.props.navigation.state.params)
-      
+    // console.log(this.props.store.loginState)
+    const { navigate } = this.props.navigation;
       return(
         <View style={styles.container}>
-        
-          <FlatList
-          data={DATA}
-          renderItem={({item}) => 
-             <TouchableOpacity onPress={() => this.cb(item)}> 
-                <ProjectsListItem key={Math.random().toString()} number={item.number} agent={item.agent} title={item.title}/>
-                 {/* <Text key={Math.random().toString()}>{item.title}</Text>  */}
-             </TouchableOpacity>}
-          keyExtractor={item => item.id}
-        />
+          <Header navigate={navigate} style={styles.navigationPanel} navigationPanel={true}/>
+          <View style={styles.list}>
+            <FlatList
+            data={DATA}
+            renderItem={({item}) => 
+              <TouchableOpacity onPress={() => this.cb(item)}> 
+                  <ProjectsListItem key={Math.random().toString()} number={item.number} agent={item.agent} title={item.title}/>
+                  {/* <Text key={Math.random().toString()}>{item.title}</Text>  */}
+              </TouchableOpacity>}
+            keyExtractor={item => item.id}
+          />
+
+          </View>
         </View>
       )
       }
     }
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 10,
+        flex: 1
+    },
+    navigationPanel:{
+      flex: 1,
+      backgroundColor: '#3B5E88',
+    },
+   
+    list:{
+      flex: 5,
+      paddingHorizontal: 10,
     }
 })
     export default connect(

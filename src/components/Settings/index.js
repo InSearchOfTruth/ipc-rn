@@ -30,6 +30,6 @@ class SettingsScreen extends React.Component {
     }
   });
 
-  const SettingsNavigator = createAppContainer(RootStack);
+  const SettingsMainScreen = createAppContainer(RootStack);
 
-  export default SettingsNavigator
+  export default SettingsMainScreen

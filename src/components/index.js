@@ -1,22 +1,21 @@
 import React from 'react'
-import Login from './login'
-import MainScreen from './mainScreen'
+import LoginMainScreen from './login/'
+import MainWindowForLoggedIn from './MainWindowForLoggedIn'
 import {connect} from 'react-redux'
-import Loading from './loading'
+import Loading from './uikit/loading'
 
 
-class FirstPage extends React.Component{
+class MainAppScreen extends React.Component{
     render(){
-        console.log('firstPage:'+this.props.store.loginState.login)
         if(this.props.store.loginState.login === 'login'){
             return(
-                <MainScreen />
+                <MainWindowForLoggedIn />
             )
         }else if(this.props.store.loginState.login === 'loading'){
             return(<Loading/>)
         }else{
             return(
-                <Login/>
+                <LoginMainScreen/>
             )
         }
     }
@@ -26,4 +25,4 @@ export default connect(
         store: state
     }),
     dispatch => ({})
-)(FirstPage)
+)(MainAppScreen)

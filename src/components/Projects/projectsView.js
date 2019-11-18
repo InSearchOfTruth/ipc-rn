@@ -1,8 +1,6 @@
-import React from 'react'
+
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { StyleSheet, Text, View,FlatList,Button, TouchableOpacity } from 'react-native';
-import {connect} from 'react-redux'
 import ProjectsList from './projectsList'
 import ProjectsInfo from './projectsInfo'
 

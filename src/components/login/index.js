@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, Image, TextInput,Button} from 'react-native';
 import {connect} from 'react-redux'
 
-class Login extends React.Component {
+class LoginMainScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,7 +19,6 @@ class Login extends React.Component {
               response.json()
               // console.log(response)
               this.props.loading()
-              console.log(this.props.store)
             })
             .then((response) => {
               this.props.loaded(this.state.username, this.state.password)
@@ -33,7 +32,7 @@ class Login extends React.Component {
       return (
         <View style={styles.container}>
           <View style={styles.logo}>
-            <Image style={styles.logoImg} source={require('../../assets/image/ip-coster-logo.png')}/>
+            <Image style={styles.logoImg} source={require('../../../assets/image/ip-coster-logo.png')}/>
           </View>
           <View style={styles.loginForm}> 
             <View>
@@ -118,4 +117,4 @@ class Login extends React.Component {
 
       
     })
-)(Login)
+)(LoginMainScreen)
