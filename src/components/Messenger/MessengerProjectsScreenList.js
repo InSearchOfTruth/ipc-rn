@@ -25,7 +25,7 @@ class MessengerProjectsScreenList extends React.Component{
         const { navigation } = this.props;
         // this.props.navigation.push('ProjectsInfo');
         this.props.navigation.navigate('chatScreen');
-        console.log(this.props.navigation)
+        // console.log(this.props.navigation)
       }
         render() {
         //   console.log('projectsView:'+this.props.navigation.state.params)

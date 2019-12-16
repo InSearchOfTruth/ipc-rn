@@ -5,7 +5,7 @@ import ProjectHeader from '../uikit/headerProjects'
 
 class ProjectsInfo extends React.Component {
     render() {
-        console.log(this.props.navigation)
+        // console.log(this.props)
         const { goBack } = this.props.navigation;
       return(
         <View style={styles.container}>

@@ -1,6 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image, TextInput,Button} from 'react-native';
 import {connect} from 'react-redux'
+import {readCookieFromStorage}  from '../../functions/getItemFromStorage'
+
+import {AsyncStorage} from 'react-native'
+import axios from 'axios'
 
 class LoginMainScreen extends React.Component {
   constructor(props) {
@@ -10,25 +14,61 @@ class LoginMainScreen extends React.Component {
       password: ''
     };
   }
+  _retrieveData = async () => {
+    
+    readCookieFromStorage()
+    
+  };
   sendLoginForm(){
     let username = this.state.username
     let password = this.state.password
+    let data = {
+      Email: username,
+      Password: password
+    }
     // , {method: 'POST',body:{username: username, password: password}}
-    fetch("http://shupenko.kl.com.ua/query/login.php")
+    fetch("https://api.ipcoster.internera.com/api/Token/login",{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(data)})
             .then((response) => {
-              response.json()
-              // console.log(response)
-              this.props.loading()
-            })
-            .then((response) => {
-              this.props.loaded(this.state.username, this.state.password)
+              let username, token
+              let props = this.props
+              response.json().then(function (data) {
+               if(!data){
+                  return
+               }
+              
+                _storeData = async () => {
+                  try {
+                    await AsyncStorage.setItem('Token', data.Token);
+                    await AsyncStorage.setItem('UserName', data.User.UserName);
+                    await AsyncStorage.setItem('email', data.User.Email);
+                    await AsyncStorage.setItem('userRole', data.User.UserRole.join(' '));
+
+                  } catch (error) {
+                    
+                  }
+                  
+
+                  
+                }
+                _storeData()
+               
+                props.login(data.Token, data.User.UserName,data.User.Email,data.User.UserRole.join(' '))
+                
+              })
+              
             })
             .then((error) => {
-                
+              
             })
   }
     render() {
-        
+      // console.log(AsyncStorage.getAllKeys())  
+      let test = this._retrieveData()
       return (
         <View style={styles.container}>
           <View style={styles.logo}>
@@ -108,11 +148,11 @@ class LoginMainScreen extends React.Component {
         store: state
     }),
     dispatch => ({
-      loading:() =>{
-        dispatch({type: 'LOADING', payload: {login:'loading'}})
-      },
-      loaded: (username, password)=>{
-        dispatch({type: 'LOGIN', payload: {login:'login', name: username, password: password}})
+      notLogin:() =>{
+        dispatch({type: 'LOGIN', payload: {login:'notLogin'}})
+    },
+      login: (token,username, email,role)=>{
+        dispatch({type: 'LOGIN', payload: {login:'login', name: username, email: email, userRole: role, token: token}})
       }
 
       

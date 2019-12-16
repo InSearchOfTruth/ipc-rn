@@ -9,7 +9,7 @@ const ProjectsListItem = (props) =>{
             <View style={styles.flagContainer}>
                 <View style={styles.flag}></View>
             </View>
-            <View style={styles.orderNumber}><Text>{props.number}</Text></View>
+            <View style={styles.orderNumber}><Text>{props.projectId}</Text></View>
             <View style={styles.orderAgent}><Text>{props.agent}</Text></View>
         </View>
     )

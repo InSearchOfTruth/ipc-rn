@@ -1,52 +1,36 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
-import ProjectsMainScreen from '../Projects'
-import SettingsMainScreen from '../Settings'
-import MessangerMainScreen from '../Messenger'
+import {connect} from 'react-redux'
+import MainWindowForLoggedIn from './MainWindow'
+import Loading from '../uikit/loading'
 
+class MainScreen extends React.Component {
 
-
-
-class IconHome extends React.Component {
+ 
   render() {
-    if(this.props.name == 'Home'){
-      return (
-        <Image style={this.props.style} source={require('../../../assets/image/MainPageLogo.png')}/>
+    // console.log(this.props.store)
+    if(this.props.store.loadingState.state === 'loading'){
+      console.log(this.props.store.loadingState.state)
+      return(
+        <Loading/>
       )
-    }else if(this.props.name == 'Settings'){
-      return (
-        <Image style={this.props.style} source={require('../../../assets/image/settingsLogo.png')}/>
+    }else if(this.props.store.loadingState.state === 'load'){
+      console.log(this.props.store.loadingState.state)
+      return(
+        <MainWindowForLoggedIn/>
       )
-    }else if(this.props.name == 'MyProjects'){
-      return (
-        <Image style={this.props.style} source={require('../../../assets/image/projectsLogo.png')}/>
-      )
-    }else if(this.props.name == 'Messanger'){
-      return (
-        <Image style={this.props.style} source={require('../../../assets/image/messangerLogo.png')}/>
+    }else{
+      console.log(this.props.store.loadingState)
+      return(
+        <MainWindowForLoggedIn/>
       )
     }
   }
 }
 
-const MainWindowForLoggedIn = createBottomTabNavigator({
-  // Home: { screen: AppNavigator },
-  MyProjects: { screen: ProjectsMainScreen },
-  Messanger: { screen: MessangerMainScreen },
-  Settings: { screen: SettingsMainScreen },
-},{
-  defaultNavigationOptions: ({ navigation }) => ({
-    tabBarIcon: () => {
-        const { routeName } = navigation.state;
-        
-          return <IconHome style={{width: 20, height: 20}} name={routeName}/>
-       
-        
-      
-    }
-  })
-});
 
-export default createAppContainer(MainWindowForLoggedIn);
+export default connect(
+    state =>({
+        store: state
+    }),
+  
+)(MainScreen)
