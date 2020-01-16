@@ -1,31 +1,22 @@
 import React from 'react'
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
 import { StyleSheet, Text, View, FlatList, Button, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux'
 import ProjectsListItem from './projectsListItem'
 import Header from '../uikit/header'
 import Loading from '../uikit/loading'
-let DATA = [
-  {id: 1, number: 12324, agent: 'test', title: 'tetete'},
-  {id: 1, number: 12324, agent: 'test', title: 'tetete'},
-  {id: 1, number: 12324, agent: 'test', title: 'tetete'},
-  {id: 1, number: 12324, agent: 'test', title: 'tetete'},
-  {id: 1, number: 12324, agent: 'test', title: 'tetete'},
-];
+import ProjectSearch from './projectSearch'
+
 
 class ProjectsList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {loading: true};
+    this.state = {loading: true, countOfProjects: 20};
   }
   cb = (item) => {
     const { navigation } = this.props;
-    // this.props.navigation.push('ProjectsInfo');
     this.props.navigation.navigate('ProjectsInfo', item);
   }
   _loadProjects() {
-    // this.props.loading('loading')
     const myHeaders = new Headers();
     let localThis = this
     let props = this.props
@@ -38,49 +29,66 @@ class ProjectsList extends React.Component {
       .then((response) => {
 
         response.json().then(function (data) {
-          props.loadProjects(data)
-          localThis.setState({loading: false})
-          
+          // console.log(data)
+          props.loadProjectsToStore(data)
         })
 
       })
+      // .then(()=>{
+      //   props.loadProjectsToRender({count: 20})
+      //   // console.log(props.store.projects.projectsList)
+      // })
       .then((error) => {
-
+         setTimeout(() => {
+            localThis.setState({loading: false})
+         }, 1000)
+        
       })
   }
   componentWillMount() {
     this._loadProjects()
   }
+  endReached = () =>{
+    let countOfProjects = this.state.countOfProjects + 10
+    this.setState({countOfProjects: countOfProjects})
+    
+  }
   render() {
-    // console.log(this.props.store.loginState)
-    //   console.log('projectsView:'+this.props.navigation.state.params)
-    // console.log(this.props.store.loginState)
+
     const { navigate } = this.props.navigation;
     if(this.state.loading){
       return(
         <Loading/>
       )
     }else{
+      let projects = this.props.projects
+      let renderProjects = projects.slice(0,this.state.countOfProjects)
+      // console.log(this.props.projects)
       return (
         <View style={styles.container}>
           <Header navigate={navigate} style={styles.navigationPanel} navigationPanel={true} />
+          <ProjectSearch style={styles.searchPanel}/>
           <View style={styles.list}>
           <FlatList
-              data={this.props.store.projects.projectsList}
-              scrollEnabled={false}
+              data={renderProjects}
+              onEndReached={this.endReached}
+              onEndReachedThreshold={.7}
+              initialNumToRender={7}
+              
+              scrollEnabled={true}
               renderItem={({ item }) =>
                 <TouchableOpacity onPress={() => this.cb(item)}>
                   <ProjectsListItem 
-                  key={Math.random().toString()} 
-                  projectId={item.ProjectID} 
-                  textNumber={item.TextNumber} 
-                  type={item.Type} 
-                  agent={item.Agent} 
-                  refss={item.Ref}
-                  country={item.Country}
-                  client={item.Client}
-                  status={item.Status}
-                  data={item.Date}
+                    key={Math.random().toString()} 
+                    ProjectID={item.ProjectID} 
+                    TextNumber={item.TextNumber} 
+                    Type={item.Type} 
+                    Agent={item.Agent} 
+                    Refs={item.Ref}
+                    Country={item.Country}
+                    Client={item.Client}
+                    Status={item.Status}
+                    Date={item.Date}
                   />
                   
                 </TouchableOpacity>}
@@ -101,7 +109,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#3B5E88',
   },
-
+  searchPanel:{
+    height: 20
+  },
   list: {
     flex: 5,
     paddingHorizontal: 10,
@@ -109,16 +119,20 @@ const styles = StyleSheet.create({
 })
 export default connect(
   state => ({
-    store: state
+    store: state,
+    projects: state.projects.filter(project => project.TextNumber.includes(state.projectSearch))
+
   }),
   dispatch => ({
     loading: (state) => {
       dispatch({ type: 'LOADING', payload: { state: state } })
     },
-    loadProjects: (projects) => {
+    loadProjectsToStore: (projects) => {
       dispatch({ type: 'LOAD_PROJECTS_LIST', payload: { projectsList: projects } })
     },
-
+    loadProjectsToRender:(count) =>{
+      dispatch({ type: 'ADD_PROJECTS_TO_RENDER', payload: count })
+    }
   })
 )(ProjectsList)
 

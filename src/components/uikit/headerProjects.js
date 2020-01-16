@@ -12,8 +12,11 @@ class ProjectHeader extends React.Component{
                         </TouchableOpacity>
                         
                         <View style={styles.projectsInfo}>
-                            <View style={styles.countryFlag}></View>
                             <Text style={styles.projectNumber}>{this.props.projectNumber}</Text>
+                            <View>
+                                <Image style={styles.navigationLogo} source={require('../../../assets/image/ip-coster-logo-white.png')}/>
+                            </View>
+                            
                         </View>
                     </View>
                 </View>
@@ -30,19 +33,22 @@ const styles = StyleSheet.create({
     },
     projectsInfo:{
         alignItems: 'center',
-        marginBottom: 10,
-        marginRight: 5
+        marginRight: 5,
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     projectNumber:{
         color: '#fff',
-        fontSize: 16,
-        marginTop: 5
+        fontSize: 24,
+        marginTop: 5,
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     countryFlag:{
-        width: 30,
-        height: 20,
-        backgroundColor: 'red',
-        borderRadius: 3
+        
+        
     },
     navigationArrow:{
         resizeMode: 'contain',
@@ -50,6 +56,13 @@ const styles = StyleSheet.create({
         marginBottom: 17,
         marginLeft: 5,
     },
+    navigationLogo:{
+        resizeMode: 'contain',
+        height: 60,
+        width: 120,
+        marginRight: 20,
+        marginTop: 5,
+    }
 })
 export default ProjectHeader
 

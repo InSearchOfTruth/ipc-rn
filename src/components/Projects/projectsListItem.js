@@ -1,20 +1,32 @@
-import React from 'react'
+import React, { PureComponent }  from 'react'
 
 import { StyleSheet, Text, View,FlatList,Button, TouchableOpacity } from 'react-native';
 
-
-const ProjectsListItem = (props) =>{
-    return(
-        <View style={styles.container}>
-            <View style={styles.flagContainer}>
-                <View style={styles.flag}></View>
+class ProjectsListItem extends PureComponent {
+    render (){
+        return(
+            <View style={styles.container}>
+                <View style={styles.flagContainer}>
+                    <View style={styles.flag}></View>
+                </View>
+                <View style={styles.orderNumber}><Text>{this.props.TextNumber}</Text></View>
+                <View style={styles.orderAgent}><Text>{this.props.Agent}</Text></View>
             </View>
-            <View style={styles.orderNumber}><Text>{props.projectId}</Text></View>
-            <View style={styles.orderAgent}><Text>{props.agent}</Text></View>
-        </View>
-    )
-
+        )
+    }
 }
+// const ProjectsListItem = (props) =>{
+//     return(
+//         <View style={styles.container}>
+//             <View style={styles.flagContainer}>
+//                 <View style={styles.flag}></View>
+//             </View>
+//             <View style={styles.orderNumber}><Text>{props.TextNumber}</Text></View>
+//             <View style={styles.orderAgent}><Text>{props.Agent}</Text></View>
+//         </View>
+//     )
+
+// }
 
 const styles = StyleSheet.create({
     container: {

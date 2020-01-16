@@ -3,9 +3,7 @@ import LoginMainScreen from './login/'
 import MainWindowForLoggedIn from './MainWindowForLoggedIn'
 import {connect} from 'react-redux'
 import Loading from './uikit/loading'
-import {readCookieFromStorage}  from '../functions/getItemFromStorage'
 import {AsyncStorage} from 'react-native'
-import axios from 'axios'
 
 class MainAppScreen extends React.Component{
     async retrieveItem(tokenKey, nameKey, mailKey, roleKey){
@@ -29,29 +27,42 @@ class MainAppScreen extends React.Component{
     }
     componentDidMount() {
         this.retrieveItem('Token','UserName','email','userRole').then((value) => {
-            const myHeaders = new Headers();
-            let props = this.props
-            myHeaders.append('Content-Type', 'application/json;charset=utf-8');
-            myHeaders.append('Authorization', 'Bearer ' + value.token);
-                  fetch("https://api.ipcoster.internera.com/api/values",{
-                      method: 'POST',
-                      headers: myHeaders})
-                      .then((response) => {
-                        console.log(response)
-                        response.json().then(function (data) {
+            if(value.token !== null){
+                // console.log(this.props.store.loginState)
+                const myHeaders = new Headers();
+                let props = this.props
+                
+                myHeaders.append('Content-Type', 'application/json;charset=utf-8');
+                myHeaders.append('Authorization', 'Bearer ' + value.token);
+                    fetch("https://api.ipcoster.internera.com/api/values",{
+                        method: 'POST',
+                        headers: myHeaders})
+                        .then((response) => {
+                            // console.log(response)
+                            if(response.status === 200){
+                                response.json().then(function (data) {
+                                    // console.log("data")
+                                    // console.log(data)
+                                    
+                                if(data == 'yes'){
+                                    props.login(value.token,value.name,value.mail,value.role)
+                                }else{
+                                    props.notLogin()
+                                }
+    
+                                })
+                            }else{
+                                props.notLogin() 
+                            }
                             
-                          if(data == 'yes'){
-                            props.login(value.token,value.name,value.mail,value.role)
-                          }else{
-                            props.notLogin()
-                          }
 
                         })
-
-                      })
-                      .then((error) => {
-                        
-                      })
+                        .then((error) => {
+                            // props.notLogin()
+                        })
+            }else{
+                this.props.notLogin()
+            }
            
             
         }).catch((error) => {
@@ -70,8 +81,8 @@ class MainAppScreen extends React.Component{
                 <LoginMainScreen/>
             )
         }else if(!this.props.store.loginState.login){
-            
-            return(<Loading />)
+            console.log(this.props.store)
+            return(<Loading/>)
         }
     }
 }

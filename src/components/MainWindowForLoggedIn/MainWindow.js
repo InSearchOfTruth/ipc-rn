@@ -5,6 +5,7 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import ProjectsMainScreen from '../Projects'
 import SettingsMainScreen from '../Settings'
 import MessangerMainScreen from '../Messenger'
+import HomeScreen from '../Home/index'
 
 
 
@@ -33,7 +34,7 @@ class IconHome extends React.Component {
 }
 
 const MainWindowForLoggedIn = createBottomTabNavigator({
-  // Home: { screen: AppNavigator },
+  Home: { screen: HomeScreen },
   MyProjects: { screen: ProjectsMainScreen },
   Messanger: { screen: MessangerMainScreen },
   Settings: { screen: SettingsMainScreen },

@@ -9,17 +9,17 @@ class MainScreen extends React.Component {
   render() {
     // console.log(this.props.store)
     if(this.props.store.loadingState.state === 'loading'){
-      console.log(this.props.store.loadingState.state)
+      // console.log(this.props.store.loadingState.state)
       return(
         <Loading/>
       )
     }else if(this.props.store.loadingState.state === 'load'){
-      console.log(this.props.store.loadingState.state)
+      // console.log(this.props.store.loadingState.state)
       return(
         <MainWindowForLoggedIn/>
       )
     }else{
-      console.log(this.props.store.loadingState)
+      // console.log(this.props.store.loadingState)
       return(
         <MainWindowForLoggedIn/>
       )

@@ -1,15 +1,17 @@
 import React from 'react'
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { StyleSheet, Text, View,FlatList,Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import ProjectsNavigator from './projectsView'
-import InvoicesMainScreen from '../Invoices'
 import Header from '../uikit/header'
 import WelcomeBlock from '../uikit/welcome'
 
 class MyProjectsNavigation extends React.Component {
+  componentDidMount(){
+    this.props.navigation.navigate('Projects')
+  }
     render() {
-      
+     
       return (
         <View style={styles.container}>
           <Header style={styles.header} styleImg={styles.headerImg} />
@@ -24,17 +26,7 @@ class MyProjectsNavigation extends React.Component {
               }
               >Projects</Text>
             </View>
-            <View
-              style={styles.button}
-              
-            >
-              <Text
-              style={styles.buttonText}
-              onPress={() =>
-                this.props.navigation.navigate('Invoices')
-              }
-              >Invoices</Text>
-            </View>
+            
           </View>
         </View>
       );
